@@ -2,6 +2,6 @@
 """Module for floor"""
 
 
-def floor(x: float) -> int:
+def floor(n: float) -> int:
     """Returns the floor of the float"""
-    return int(x)
+    return int(n)
