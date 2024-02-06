@@ -32,3 +32,18 @@ class TestGithubOrgClient(unittest.TestCase):
                    PropertyMock(return_value=result)):
             res = GithubOrgClient(name)._public_repos_url
             self.assertEqual(res, result.get('repos_url'))
+
+    @patch('client.get_json')
+    def test_public_repos(self, mock):
+        """test case for GithubOrgClient.public_repos"""
+        payload = [{"name": "google"}, {"name": "abc"}]
+        mock.return_value = payload
+        with patch('client.GithubOrgClient._public_repos_url',
+                   new_callable=PropertyMock) as mock_public:
+            mock_public.return_value = "http://some_url.com"
+            res = GithubOrgClient('test').public_repos()
+            self.assertEqual(
+                res,
+                ['google', 'abc']
+            )
+            mock.assert_called_once_with("http://some_url.com")
