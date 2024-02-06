@@ -61,6 +61,8 @@ class TestMemoize(unittest.TestCase):
         with patch.object(TestClass, 'a_method') as mockingbird:
             mockingbird.return_value = 42
             tc = TestClass()
-            tc.a_property
-            tc.a_property
+            res1 = tc.a_property
+            res2 = tc.a_property
+            self.assertEqual(res1, 42)
+            self.assertEqual(res2, 42)
             mockingbird.assert_called_once()
