@@ -79,9 +79,22 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """end class"""
         cls.get_patcher.stop()
 
-    def test_public_repos(self) -> None:
+    def test_public_repos(self):
         """test case for GithubOrgClient.public_repos"""
         self.assertEqual(
             GithubOrgClient("google").public_repos(),
             self.expected_repos,
         )
+
+    def test_public_repos_with_license(self):
+        """test case for GithubOrgClient.public_repos with license"""
+        with patch('client.GithubOrgClient.has_license',
+                   return_value=True) as licensedMockingBird:
+            self.assertEqual(
+                GithubOrgClient("google").public_repos("apache-2.0"),
+                self.apache2_repos,
+            )
+            licensedMockingBird.assert_called_once()
+            licensedMockingBird.assert_called_with(
+                self.org_payload, "apache-2.0"
+            )
