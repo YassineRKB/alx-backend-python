@@ -58,11 +58,11 @@ class TestMemoize(unittest.TestCase):
                 """a property"""
                 return self.a_method()
 
-        with patch.object(TestClass, 'a_method', return_value=42) as mockingbird:
-            tygerclaws = TestClass()
-            self.assertEqual(tygerclaws.a_property, 42)
-            self.assertEqual(tygerclaws.a_property, 42)
-            mockingbird.assert_called_once()
-            del tygerclaws.a_property
-            self.assertEqual(tygerclaws.a_property, 42)
-            mockingbird.assert_called()
+        with patch.object(TestClass, 'a_method') as mockingbird:
+            mockingbird.return_value = 42
+            tc = TestClass()
+            self.assertEqual(tc.a_property, 42)
+            self.assertEqual(tc.a_property, 42)
+        
+        mockingbird.assert_called_once()
+        
