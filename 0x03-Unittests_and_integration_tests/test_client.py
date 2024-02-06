@@ -22,3 +22,13 @@ class TestGithubOrgClient(unittest.TestCase):
         goc.org()
         link = f'https://api.github.com/orgs/{org}'
         mock.assert_called_once_with(link)
+
+    @parameterized.expand([
+        ('random_url', {'repos_url': 'http://some_url.com'})
+    ])
+    def test_public_repos_url(self, name, result):
+        """test case for GithubOrgClient._public_repos_url"""
+        with patch('client.GithubOrgClient.org',
+                   PropertyMock(return_value=result)):
+            res = GithubOrgClient(name)._public_repos_url
+            self.assertEqual(res, result.get('repos_url'))
