@@ -41,3 +41,28 @@ class TestGetJson(unittest.TestCase):
             cpx = get_json(url)
         mockingbird_get.assert_called_once_with(url)
         self.assertEqual(cpx, payload)
+
+
+class TestMemoize(unittest.TestCase):
+    """unitest for memoize func"""
+    def test_memoize(self):
+        """test case for memoize func"""
+        class TestClass:
+            """test class"""
+            def a_method(self):
+                """a method"""
+                return 42
+
+            @memoize
+            def a_property(self):
+                """a property"""
+                return self.a_method()
+
+        with patch.object(TestClass, 'a_method', return_value=42) as mockingbird:
+            tygerclaws = TestClass()
+            self.assertEqual(tygerclaws.a_property, 42)
+            self.assertEqual(tygerclaws.a_property, 42)
+            mockingbird.assert_called_once()
+            del tygerclaws.a_property
+            self.assertEqual(tygerclaws.a_property, 42)
+            mockingbird.assert_called()
