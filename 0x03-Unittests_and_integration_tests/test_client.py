@@ -78,7 +78,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def tearDownClass(cls):
         """end class"""
         cls.get_patcher.stop()
-    
+
     def test_public_repos(self) -> None:
         """test case for GithubOrgClient.public_repos"""
         self.assertEqual(
