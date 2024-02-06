@@ -37,9 +37,9 @@ class TestGetJson(unittest.TestCase):
         """test case for get_json func"""
         mock_response = Mock()
         mock_response.json.return_value = payload
-        with patch('requests.get', return_value=mock_response) as mockingbird_get:
+        with patch('requests.get', return_value=mock_response) as mockingbird:
             cpx = get_json(url)
-        mockingbird_get.assert_called_once_with(url)
+        mockingbird.assert_called_once_with(url)
         self.assertEqual(cpx, payload)
 
 
